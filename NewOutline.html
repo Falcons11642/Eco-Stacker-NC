@@ -1,0 +1,143 @@
+<!DOCTYPE html> 
+<html lang="en"> 
+<head> 
+<meta charset="UTF-8"> 
+<meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+<title>Eco-Stacker: The Rock Cairn Simulator</title> 
+<style> 
+body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background-color: #27ae60; background-image: radial-gradient(#1e7e43 20%, transparent 20%), linear-gradient(45deg, transparent 45%, #2ecc71 45%, #2ecc71 55%, transparent 55%); background-size: 40px 40px; color: #333; } 
+.container { max-width: 750px; margin: 0 auto; background: #ffffff; padding: 20px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); border: 4px solid #145a2f; text-align: center; } 
+.riverbed-box { width: 90%; height: 180px; background-color: #7091e6; border: 4px solid #1e3a8a; border-radius: 10px; margin: 15px auto; padding: 10px; box-sizing: border-box; } 
+#rock-holder { width: 100%; height: 100%; display: flex; flex-direction: column-reverse; align-items: center; justify-content: flex-start; } 
+.visual-rock { background-color: #64748b; border: 3px solid #0f172a; color: #ffffff; font-weight: bold; font-size: 12px; height: 25px; line-height: 20px; margin-bottom: 4px; border-radius: 6px; text-align: center; box-shadow: 0 3px 5px rgba(0,0,0,0.3); } 
+.button-section { margin: 20px 0; padding: 5px; } 
+button { color: #ffffff; border: none; padding: 12px 16px; font-size: 14px; border-radius: 6px; cursor: pointer; font-weight: bold; margin: 5px; display: inline-block; } 
+#btn-stack { background-color: #10b981; } 
+#btn-unstack { background-color: #f59e0b; } 
+#btn-fact { background-color: #8b5cf6; } 
+#btn-reset { background-color: #64748b; } 
+button:disabled { background-color: #cbd5e1 !important; color: #94a3b8 !important; cursor: not-allowed; } 
+.output-box { padding: 15px; background-color: #f8fafc; border-left: 6px solid #2563eb; border-radius: 6px; text-align: left; min-height: 60px; margin-bottom: 15px; font-size: 14px; } 
+.status-box { background: #f1f5f9; padding: 10px; border-radius: 6px; font-weight: bold; margin-bottom: 20px; } 
+.animal-row { display: flex; justify-content: space-between; gap: 10px; margin-top: 10px; flex-wrap: wrap; } 
+.animal-card { flex: 1; min-width: 150px; background: #f8fafc; padding: 10px; border-radius: 8px; border: 2px solid #e2e8f0; } 
+.animal-graphic { width: 100%; height: 90px; background-color: #cbd5e1; border-radius: 6px; margin-bottom: 6px; display: flex; align-items: center; justify-content: center; font-size: 24px; border: 1px solid #94a3b8; } 
+.animal-card p { margin: 0; font-size: 11px; color: #475569; text-align: left; line-height: 1.3; } 
+.team-credit { font-size: 11px; color: #94a3b8; margin-top: 20px; font-style: italic; border-top: 1px dashed #cbd5e1; padding-top: 10px; } 
+</style> 
+</head> 
+<body> 
+<div class="container"> 
+<h2 style="margin: 0 0 5px 0;">Eco-Stacker ⛰️</h2> 
+<div style="font-size: 13px; color: #475569; margin-bottom: 10px;">Simulate moving river rocks in North Carolina</div> 
+<div class="riverbed-box"> 
+<div id="rock-holder"></div> 
+</div> 
+<div class="button-section"> 
+<button id="btn-stack" onclick="handleStackClick()">Stack a Rock!</button> 
+<button id="btn-unstack" onclick="handleUnstackClick()" disabled>Un-stack a Rock!</button> 
+<button id="btn-fact" onclick="handleFactClick()">💡 Stream Fun Fact</button> 
+<button id="btn-reset" onclick="handleResetClick()">Reset</button> 
+</div> 
+<div class="output-box"> 
+<strong>Environmental Impact:</strong> 
+<p id="display-text" style="margin: 5px 0 0 0;">The river is peaceful. Rocks are safely on the ground sheltering tiny creatures.</p> </div> 
+<div class="status-box"> Ecosystem Health: <span id="health-lbl" style="color: #10b981;">100%</span> | Rocks: <span id="count-lbl">0</span>/5 | Time: <span id="days-lbl" style="color: #2563eb;">0 days</span> </div> 
+<div style="font-weight: bold; font-size: 12px; text-align: left; margin-bottom: 5px;">NC River Creatures Affected:</div> 
+<div class="animal-row"> 
+<div class="animal-card"> 
+<div class="animal-graphic">🦎</div> 
+<strong style="font-size: 12px; display: block; margin-bottom: 4px;">Eastern Hellbender</strong> 
+<p>North America's largest salamander, native to NC hills. They rely on massive flat base rocks to hide and protect their nests.</p> </div> 
+<div class="animal-card"> 
+<div class="animal-graphic">🐛</div> 
+<strong style="font-size: 12px; display: block; margin-bottom: 4px;">Mayfly Nymph</strong> 
+<p>Found under rocks in pristine Wilkes County streams. They use flat bodies to anchor themselves against fast water currents.</p> </div> 
+<div class="animal-card"> 
+<div class="animal-graphic">🐟</div> 
+<strong style="font-size: 12px; display: block; margin-bottom: 4px;">Carolina Darter</strong> 
+<p>A small, rare fish that lives strictly at the bottom of clean Piedmont streams, hiding from predators behind gravel patches.</p> </div> 
+<div class="animal-card"> 
+<div class="animal-graphic">🎣</div> 
+<strong style="font-size: 12px; display: block; margin-bottom: 4px;">Brook Trout</strong> 
+<p>NC's only native trout. They lay eggs in the clean, sediment-free gravel spaces kept safe by undisturbed large river rocks.</p> </div> 
+</div> 
+<div class="team-credit">Made by the Central Wilkes Middle School Robotics Team-2026</div> 
+</div> 
+<script> 
+let rocks = 0; 
+let score = 100; 
+let days = 0; 
+const issues = [ "You picked up a large base rock from the stream bed. You just exposed a nesting Eastern Hellbender! Its hidden eggs are now swept away by the river current.", "You added a second rock. Moving this stone disturbed the gravel bed, triggering minor soil erosion that clouds the crisp mountain stream.", "Three rocks high! You have stripped the rapids of shelter. Mayfly nymphs lose their footing and are instantly eaten by trout.", "Four rocks high! A hiking group steps off the official park trail because they think your stacked cairn points to a new direction.", "Five rocks stacked! The unstable structure collapses, crushing a juvenile salamander seeking safety beneath the rubble." ]; 
+const repairs = [ "You carefully return the top rock. The danger decreases, but it takes 3 days for the micro-debris to settle down.", "You take away another rock, ensuring future hikers stay safely tracked to the designated park loop.", "You return the third stone. The stream currents slowly begin re-leveling around the empty patch over 7 days.", "You lower the second rock. It takes roughly two weeks for the silty river bank to stop shedding loose topsoil.", "You slide the massive base rock right back where you found it! Over the next month, wild macroinvertebrates will slowly repopulate the clean, dark under-surface." ]; 
+
+// Fixed via an alternative safe initialization syntax
+const timeCosts = Array.from([3, 1, 7, 14, 30]); 
+
+const funFacts = [ "🦎 Hellbenders breathe entirely through their wrinkly skin! Because they don't use lungs underwater, they need clean, fast-flowing water filled with oxygen.", "🐛 Mayfly nymphs are biological indicators! If you find lots of them under rocks in a Wilkes County creek, it means the water quality is clean and healthy.", "🪨 Moving river rocks to build structures creates miniature dams. This traps sediment, which smothers the small spaces trout use to lay eggs.", "🦕 Eastern Hellbenders are ancient! Fossils show they haven't changed much in 65 million years, earning them the nickname 'Living Dinosaurs' of NC.", "🏞️ The Yadkin River basin flows right through Wilkes County, providing vital pathways for protected native North Carolina species.", "🦞 Crawfish, hellbenders' favorite food, live under the exact same flat rocks. Moving stones strips away the entire hunting ground for local predators!", "🪶 The Central Wilkes Middle School Falcons know that real outdoor conservation means leaving every stone exactly where nature put it!" ]; 
+
+function updateUI() {
+    document.getElementById('count-lbl').innerText = rocks;
+    document.getElementById('days-lbl').innerText = days + " days";
+    document.getElementById('health-lbl').innerText = score + "%";
+    
+    const healthLbl = document.getElementById('health-lbl');
+    if (score >= 80) {
+        healthLbl.style.color = "#10b981";
+    } else if (score >= 50) {
+        healthLbl.style.color = "#f59e0b";
+    } else {
+        healthLbl.style.color = "#ef4444";
+    }
+
+    document.getElementById('btn-stack').disabled = (rocks >= 5);
+    document.getElementById('btn-unstack').disabled = (rocks <= 0);
+
+    const holder = document.getElementById('rock-holder');
+    holder.innerHTML = "";
+    for (let i = 1; i <= rocks; i++) {
+        const rockDiv = document.createElement('div');
+        rockDiv.className = "visual-rock";
+        rockDiv.style.width = (100 - (i * 12)) + "%";
+        rockDiv.innerText = "Rock " + i;
+        holder.appendChild(rockDiv);
+    }
+}
+
+function handleStackClick() {
+    if (rocks < 5) {
+        rocks++;
+        score -= 20; 
+        document.getElementById('display-text').innerText = issues[rocks - 1];
+        updateUI();
+    }
+}
+
+function handleUnstackClick() {
+    if (rocks > 0) {
+        const costIndex = rocks - 1;
+        days += timeCosts[costIndex];
+        score += 20; 
+        rocks--;
+        document.getElementById('display-text').innerText = repairs[costIndex];
+        updateUI();
+    }
+}
+
+function handleFactClick() {
+    const randomIndex = Math.floor(Math.random() * funFacts.length);
+    document.getElementById('display-text').innerText = funFacts[randomIndex];
+}
+
+function handleResetClick() {
+    rocks = 0;
+    score = 100;
+    days = 0;
+    document.getElementById('display-text').innerText = "The river is peaceful. Rocks are safely on the ground sheltering tiny creatures.";
+    updateUI();
+}
+
+updateUI();
+</script> 
+</body> 
+</html>
